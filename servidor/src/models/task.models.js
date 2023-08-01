@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 
 const taskSchema = new mongoose.Schema({
-    tittle: {
+    title: {
         type: String,
         required: true
     },
@@ -12,7 +12,13 @@ const taskSchema = new mongoose.Schema({
     date: {
         type: Date,
         default : Date.now
+    },
+    user:{
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'User',
+        require: true
     }
+    
 },{
     timestamps : true
 })
