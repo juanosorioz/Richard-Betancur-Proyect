@@ -1,17 +1,24 @@
 import { useForm } from 'react-hook-form'
-import { registerRequest } from '../api/auth.js';
-
+import { useAuth } from '../context/AuthContext.jsx';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'
 
 function RegisterPage() {
 
-    const { register,handleSubmit } = useForm();
+    const { register,handleSubmit, formState : {errors} } = useForm();
+    const { signup, isAuthenticathed, errors: RegisterErrors } = useAuth();
+    const navigate = useNavigate();
+
+    useEffect(()=>{
+      if(isAuthenticathed) navigate('/tasks');
+
+    }, [isAuthenticathed, navigate])
 
   return (
     <div className='bg-zinc-800 max-w-md p-10 rounded-md'>
       <form onSubmit={handleSubmit(async (values) => {
-        console.log(values);
-        const res = await registerRequest(values)
-        console.log(res)
+        signup(values)//console.log(values);
+      
       })}>
         <input type="text" {...register("username", {required:true})} placeholder='username' className='w-full bg-zinc-600 text-white px-4 py-4 rounded-md my-2'/>
         <input type="email" {...register("email", {required:true})} placeholder='email' className='w-full bg-zinc-600 text-white px-4 py-4 rounded-md my-2'/>
